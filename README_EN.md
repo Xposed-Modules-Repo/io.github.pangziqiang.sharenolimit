@@ -36,6 +36,8 @@ The module relies on internal class/method names from the Mi Share APK. Compatib
 
 Verified: "Everyone" mode remained enabled after more than 10 minutes.
 
+The module has no launcher icon. All management is done in LSPosed Manager.
+
 ## Building
 
 The project requires JDK 17+ and Android SDK 34+.

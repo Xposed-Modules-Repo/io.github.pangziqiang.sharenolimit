@@ -2,6 +2,4 @@
 <resources>
     <string name="app_name">MiShareNoLimit</string>
     <string name="module_desc">Remove Mi Share 10-minute auto-close limit for Everyone mode</string>
-    <string name="ui_title">MiShareNoLimit</string>
-    <string name="ui_summary">Remove the 10-minute auto-close limit for Mi Share "Everyone" mode</string>
 </resources>

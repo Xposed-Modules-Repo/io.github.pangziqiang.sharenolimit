@@ -43,6 +43,8 @@
 
 > 已实测：开启「所有人」超过 10 分钟不自动关闭。
 
+模块没有桌面图标，不需要打开模块 App，所有操作都在 LSPosed 管理器中完成。
+
 ## 构建
 
 需要 JDK 17+ 和 Android SDK 34+。
@@ -56,7 +58,6 @@
 ## 目录
 
 - `app/src/main/java/com/example/mishare_nolimit/MainModule.java` —— libxposed 入口与 hook
-- `app/src/main/java/com/example/mishare_nolimit/MainActivity.java` —— 模块 App 主页
 - `app/src/main/resources/META-INF/xposed/` —— 现代 LSPosed 模块声明
 - `app/src/main/res/values/`、`values-zh-rCN/` —— 中英文资源
 

@@ -2,6 +2,4 @@
 <resources>
     <string name="app_name">小米互传无限制</string>
     <string name="module_desc">移除小米互传「所有人」模式 10 分钟自动关闭限制</string>
-    <string name="ui_title">小米互传无限制</string>
-    <string name="ui_summary">移除小米互传「所有人」模式 10 分钟自动关闭限制</string>
 </resources>
