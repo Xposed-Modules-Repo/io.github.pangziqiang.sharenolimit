@@ -13,18 +13,21 @@
 
 双层防护，让「所有人」模式保持开启，不再自动关闭。
 
-## 模块格式与本地化
+## 模块格式
 
-- 使用 LSPosed 现代模块格式（`META-INF/xposed/module.prop` + `java_init.list` + `scope.list`）
-- App 名称与模块描述支持中英文：中文系统显示中文，其他语言显示英文
+- 使用 LSPosed 现代 libxposed 模块格式（`META-INF/xposed/module.prop` + `java_init.list` + `scope.list`）
+- 入口类 `MainModule` 继承 `io.github.libxposed.api.XposedModule`
+- 使用 `io.github.libxposed:api:101.0.1`，`minApiVersion` / `targetApiVersion = 101`
 
 ## 使用
 
-1. 安装 [apk/MiShareNoLimit_v1.1.apk](apk/MiShareNoLimit_v1.1.apk)
+1. 安装 [MiShareNoLimit_v1.2.apk](apk/MiShareNoLimit_v1.2.apk)
 2. 在 LSPosed 管理器中启用本模块
 3. 作用域勾选 `com.miui.mishare.connectivity`
 4. 重启手机
 5. 打开小米互传「所有人」模式，等待超过 10 分钟验证不再自动关闭
+
+> 已实测：开启「所有人」超过 10 分钟不自动关闭。
 
 ## 构建
 
@@ -36,8 +39,9 @@
 
 ## 目录
 
-- `app/src/main/java/com/example/mishare_nolimit/HookMain.java` —— hook 入口
-- `app/src/main/assets/META-INF/xposed/` —— 现代 LSPosed 模块声明
+- `app/src/main/java/com/example/mishare_nolimit/MainModule.java` —— libxposed 入口与 hook
+- `app/src/main/java/com/example/mishare_nolimit/MainActivity.java` —— 模块 App 主页
+- `app/src/main/resources/META-INF/xposed/` —— 现代 LSPosed 模块声明
 - `app/src/main/res/values/`、`values-zh-rCN/` —— 中英文资源
 
 ## 说明
