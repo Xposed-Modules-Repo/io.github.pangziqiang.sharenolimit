@@ -1,4 +1,4 @@
-package com.example.mishare_nolimit;
+package io.github.pangziqiang.misharenolimit;
 
 import java.lang.reflect.Method;
 

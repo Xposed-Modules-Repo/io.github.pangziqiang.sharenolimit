@@ -1,4 +1,4 @@
-package com.example.mishare_nolimit;
+package io.github.pangziqiang.misharenolimit;
 
 import android.app.Activity;
 import android.os.Bundle;
