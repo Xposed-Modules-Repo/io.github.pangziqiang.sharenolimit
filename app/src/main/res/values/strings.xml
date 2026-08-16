@@ -4,10 +4,4 @@
     <string name="module_desc">Remove Mi Share 10-minute auto-close limit for Everyone mode</string>
     <string name="ui_title">MiShareNoLimit</string>
     <string name="ui_summary">Remove the 10-minute auto-close limit for Mi Share "Everyone" mode</string>
-    <string name="ui_reboot_prompt">Module enabled. A reboot is required to apply the hooks.</string>
-    <string name="ui_reboot_button">Reboot now</string>
-    <string name="ui_reboot_later">Later</string>
-    <string name="ui_reboot_requested">Reboot requested…</string>
-    <string name="ui_reboot_failed">Reboot failed. Please reboot manually.</string>
-    <string name="ui_root_missing">Root not available. Please reboot manually.</string>
 </resources>
