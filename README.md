@@ -6,11 +6,21 @@
 
 小米互传 App（`com.miui.mishare.connectivity`）里的 `T0.b` 类（日志名 `AutoClose`）会在开启「所有人」模式时启动一个 10 分钟倒计时，倒计时结束后自动关闭「所有人可见」。
 
-本模块 hook `T0.b.f()`，直接跳过倒计时启动逻辑，让「所有人」模式保持开启，不再自动关闭。
+本模块 hook：
+
+- `T0.b.f()`：跳过倒计时启动逻辑；
+- `T0.b.d()`：即使倒计时触发，也不执行自动关闭。
+
+双层防护，让「所有人」模式保持开启，不再自动关闭。
+
+## 模块格式与本地化
+
+- 使用 LSPosed 现代模块格式（`META-INF/xposed/module.prop` + `java_init.list` + `scope.list`）
+- App 名称与模块描述支持中英文：中文系统显示中文，其他语言显示英文
 
 ## 使用
 
-1. 安装 [apk/MiShareNoLimit_v1.0.apk](apk/MiShareNoLimit_v1.0.apk)
+1. 安装 [apk/MiShareNoLimit_v1.1.apk](apk/MiShareNoLimit_v1.1.apk)
 2. 在 LSPosed 管理器中启用本模块
 3. 作用域勾选 `com.miui.mishare.connectivity`
 4. 重启手机
@@ -27,8 +37,8 @@
 ## 目录
 
 - `app/src/main/java/com/example/mishare_nolimit/HookMain.java` —— hook 入口
-- `app/src/main/assets/xposed_init` —— LSPosed 入口声明
-- `app/src/main/res/values/arrays.xml` —— 推荐作用域
+- `app/src/main/assets/META-INF/xposed/` —— 现代 LSPosed 模块声明
+- `app/src/main/res/values/`、`values-zh-rCN/` —— 中英文资源
 
 ## 说明
 

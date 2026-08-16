@@ -19,6 +19,7 @@ public class HookMain implements IXposedHookLoadPackage {
 
         try {
             Class<?> clazz = XposedHelpers.findClass(AUTO_CLOSE_CLASS, lpparam.classLoader);
+
             XposedHelpers.findAndHookMethod(clazz, "f", new XC_MethodHook() {
                 @Override
                 protected void beforeHookedMethod(MethodHookParam param) {
@@ -29,6 +30,17 @@ public class HookMain implements IXposedHookLoadPackage {
                 }
             });
             XposedBridge.log("[MiShareNoLimit] hooked AutoClose.f()");
+
+            XposedHelpers.findAndHookMethod(clazz, "d", new XC_MethodHook() {
+                @Override
+                protected void beforeHookedMethod(MethodHookParam param) {
+                    // d() is the timer-expired callback that stops "everyone" mode.
+                    // No-op it as a second layer: even if the timer somehow starts, it won't close.
+                    XposedBridge.log("[MiShareNoLimit] skip AutoClose.d()");
+                    param.setResult(null);
+                }
+            });
+            XposedBridge.log("[MiShareNoLimit] hooked AutoClose.d()");
         } catch (Throwable t) {
             XposedBridge.log("[MiShareNoLimit] hook failed: " + t);
         }
