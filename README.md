@@ -22,7 +22,7 @@
 | 目标应用 | 小米互传 5.1.12（`com.miui.mishare.connectivity`） |
 | 框架 | 支持 libxposed Modern API 101+ 的官方 LSPosed |
 | Android | Android 10（API 29）及以上 |
-| 模块版本 | 1.2（versionCode 3） |
+| 模块版本 | 1.3（versionCode 4） |
 
 模块依赖互传 App 的内部类名和方法签名，不保证兼容其他版本。
 
