@@ -1,6 +1,8 @@
 # MiShareNoLimit
 
-一个 LSPosed 模块，用来去掉小米互传「所有人」模式的 10 分钟自动关闭限制。
+[English](README_EN.md)
+
+一个基于 LSPosed 现代 libxposed API 的模块，用来移除小米互传「所有人」模式的 10 分钟自动关闭限制。
 
 ## 原理
 
@@ -13,15 +15,27 @@
 
 双层防护，让「所有人」模式保持开启，不再自动关闭。
 
+## 兼容性
+
+| 项目 | 要求 |
+| --- | --- |
+| 目标应用 | 小米互传 5.1.12（`com.miui.mishare.connectivity`） |
+| 框架 | 支持 libxposed Modern API 101+ 的官方 LSPosed |
+| Android | Android 10（API 29）及以上 |
+| 模块版本 | 1.2（versionCode 3） |
+
+模块依赖互传 App 的内部类名和方法签名，不保证兼容其他版本。
+
 ## 模块格式
 
-- 使用 LSPosed 现代 libxposed 模块格式（`META-INF/xposed/module.prop` + `java_init.list` + `scope.list`）
+- LSPosed 现代 libxposed 模块格式（`META-INF/xposed/module.prop` + `java_init.list` + `scope.list`）
 - 入口类 `MainModule` 继承 `io.github.libxposed.api.XposedModule`
-- 使用 `io.github.libxposed:api:101.0.1`，`minApiVersion` / `targetApiVersion = 101`
+- 依赖 `io.github.libxposed:api:101.0.1`，`minApiVersion` / `targetApiVersion = 101`
+- App 名称与描述支持中英文，中文系统显示中文，其他语言显示英文
 
 ## 使用
 
-1. 安装 [MiShareNoLimit_v1.2.apk](apk/MiShareNoLimit_v1.2.apk)
+1. 从 GitHub Releases 下载并安装 APK
 2. 在 LSPosed 管理器中启用本模块
 3. 作用域勾选 `com.miui.mishare.connectivity`
 4. 重启手机
@@ -30,6 +44,8 @@
 > 已实测：开启「所有人」超过 10 分钟不自动关闭。
 
 ## 构建
+
+需要 JDK 17+ 和 Android SDK 34+。
 
 ```bash
 ./gradlew :app:assembleDebug
@@ -44,6 +60,10 @@
 - `app/src/main/resources/META-INF/xposed/` —— 现代 LSPosed 模块声明
 - `app/src/main/res/values/`、`values-zh-rCN/` —— 中英文资源
 
-## 说明
+## 许可证
 
-这是针对当前 HyperOS 小米互传 APK 的反编译结果写的 hook，如果小米后续更新互传 App，类名/方法名可能变化，需要重新适配。
+[MIT License](LICENSE)
+
+## 免责声明
+
+本项目是社区模块，与小米公司、小米互传或 LSPosed 项目无隶属或认可关系，仅供学习、研究和个人设备使用。使用前请确认符合当地法律及相关服务条款。
