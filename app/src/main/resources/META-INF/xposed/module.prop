@@ -1,8 +1,0 @@
-name=MiShareNoLimit
-version=1.5
-versionCode=6
-author=yao
-description=移除小米互传「所有人」10分钟自动关闭限制 | Remove Mi Share 10-minute auto-close limit
-minApiVersion=101
-targetApiVersion=101
-staticScope=false

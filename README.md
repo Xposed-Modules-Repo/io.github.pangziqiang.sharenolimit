@@ -2,7 +2,7 @@
 
 [English](README_EN.md)
 
-一个基于 LSPosed 现代 libxposed API 的模块，用来移除小米互传「所有人」模式的 10 分钟自动关闭限制。
+一个基于 LSPosed 传统 XposedBridge API 的模块，用来移除小米互传「所有人」模式的 10 分钟自动关闭限制。
 
 ## 原理
 
@@ -20,7 +20,7 @@
 | 项目 | 要求 |
 | --- | --- |
 | 目标应用 | 小米互传 5.1.12（`com.miui.mishare.connectivity`） |
-| 框架 | 支持 libxposed Modern API 101+ 的官方 LSPosed |
+| 框架 | LSPosed（传统 XposedBridge 模块格式） |
 | Android | Android 10（API 29）及以上 |
 | 模块版本 | 1.3（versionCode 4） |
 
@@ -28,9 +28,9 @@
 
 ## 模块格式
 
-- LSPosed 现代 libxposed 模块格式（`META-INF/xposed/module.prop` + `java_init.list` + `scope.list`）
-- 入口类 `MainModule` 继承 `io.github.libxposed.api.XposedModule`
-- 依赖 `io.github.libxposed:api:101.0.1`，`minApiVersion` / `targetApiVersion = 101`
+- LSPosed 传统 XposedBridge 模块格式（`assets/xposed_init` + manifest metadata）
+- 入口类 `HookMain` 实现 `IXposedHookLoadPackage`
+- 依赖 `de.robv.android.xposed:api:82`
 - App 名称与描述支持中英文，中文系统显示中文，其他语言显示英文
 
 ## 使用
@@ -57,8 +57,8 @@
 
 ## 目录
 
-- `app/src/main/java/com/example/mishare_nolimit/MainModule.java` —— libxposed 入口与 hook
-- `app/src/main/resources/META-INF/xposed/` —— 现代 LSPosed 模块声明
+- `app/src/main/java/io/github/pangziqiang/misharenolimit/HookMain.java` —— XposedBridge 入口与 hook
+- `app/src/main/assets/xposed_init` —— LSPosed 传统模块入口声明
 - `app/src/main/res/values/`、`values-zh-rCN/` —— 中英文资源
 
 ## 许可证

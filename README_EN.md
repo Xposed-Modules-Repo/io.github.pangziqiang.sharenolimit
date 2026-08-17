@@ -2,7 +2,7 @@
 
 [简体中文](README.md)
 
-An LSPosed module that removes the 10-minute auto-close limit for Mi Share "Everyone" mode.
+An LSPosed module built with the traditional XposedBridge API that removes the 10-minute auto-close limit for Mi Share "Everyone" mode.
 
 ## How it works
 
@@ -20,7 +20,7 @@ This double protection keeps "Everyone" mode enabled indefinitely.
 | Component | Requirement |
 | --- | --- |
 | Target app | Mi Share 5.1.12 (`com.miui.mishare.connectivity`) |
-| Framework | LSPosed with libxposed Modern API 101+ support |
+| Framework | LSPosed (traditional XposedBridge module format) |
 | Android | Android 10 (API 29) or later |
 | Module version | 1.3 (versionCode 4) |
 
