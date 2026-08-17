@@ -22,7 +22,7 @@ This double protection keeps "Everyone" mode enabled indefinitely.
 | Target app | Mi Share 5.1.12 (`com.miui.mishare.connectivity`) |
 | Framework | LSPosed (traditional XposedBridge module format) |
 | Android | Android 10 (API 29) or later |
-| Module version | 1.3 (versionCode 4) |
+| Module version | 1.6 (versionCode 7) |
 
 The module relies on internal class/method names from the Mi Share APK. Compatibility with other versions is not guaranteed.
 
