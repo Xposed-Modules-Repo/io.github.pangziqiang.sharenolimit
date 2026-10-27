@@ -2,5 +2,9 @@
 <resources>
     <string-array name="xposed_scope">
         <item>com.miui.mishare.connectivity</item>
+        <item>com.coloros.oshare</item>
+        <item>com.oplus.oshare</item>
+        <item>com.vivo.easyshare</item>
+        <item>com.samsung.android.app.sharelive</item>
     </string-array>
 </resources>
