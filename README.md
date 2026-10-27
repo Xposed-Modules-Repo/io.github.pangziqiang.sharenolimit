@@ -10,7 +10,7 @@
 
 遇到问题时，请附上设备型号、系统版本、互传 App 版本以及 LSPosed 日志。
 
-> 1.9 起模块包名由 `io.github.pangziqiang.misharenolimit` 变更为 `io.github.pangziqiang.sharenolimit`，无法直接覆盖旧版安装。请先在 LSPosed 管理器中停用并卸载旧模块，再安装新版并重新勾选作用域。
+> 1.9 起模块包名由 `io.github.pangziqiang.misharenolimit` 变更为 `io.github.pangziqiang.sharenolimit`。1.10 起改用独立正式证书签名，与更早版本不兼容覆盖安装。升级前请先在 LSPosed 管理器中停用并卸载旧模块，再安装新版并重新勾选作用域。
 
 当前支持：
 
@@ -74,15 +74,6 @@ vivo 互传的机制与小米/OPPO 不同。它没有「所有人可见性 10 �
 
 该适配来自固件 APK 静态分析，尚未在三星真机验证。三星不同系统版本会重新混淆内部类名；若日志提示 `oc.o5.n(Long)` 和 `b7.F2.o(Long)` 均未找到，接收器 hook 仍可阻止到期重置，但建议重新适配调度器。
 
-### 其他厂商调研结论
-
-以下厂商目前没有加入 hook，原因是没有找到对应的「所有人可见 10 分钟」机制，而不是遗漏：
-
-- 联想 ZUI 15.0.0811 的 `com.zui.wifip2p`（Lenovo One / 超级互联）反编译后未发现可见性到期计时器。代码中的 20 秒、30 秒、60 秒和 90 秒常量用于连接协商与传输任务，`ZUI2Share` 文档提到的“约 5 分钟自动关闭”指接收端设备（如 ColorOS），不是联想本身。
-- Moto 的 tank、fogos、lamu 固件转储中没有独立的厂商互传 APK。`MotoSpaces` 只是包含 Google Nearby Sharing 的客户端特性声明，实际快速共享由 GMS 提供，不属于本项目可按厂商互传适配的范围。
-- 荣耀新机型普遍没有稳定的 Bootloader 解锁和 LSPosed 使用条件，因此不建议投入适配。
-- 华为已转入鸿蒙原生体系，不属于 Android/LSPosed 生态。
-
 ## 兼容性
 
 | 项目 | 要求 |
@@ -91,7 +82,7 @@ vivo 互传的机制与小米/OPPO 不同。它没有「所有人可见性 10 �
 | 目标包名 | `com.miui.mishare.connectivity` / `com.coloros.oshare`、`com.oplus.oshare` / `com.vivo.easyshare` / `com.samsung.android.app.sharelive` |
 | 框架 | LSPosed（传统 XposedBridge 模块格式） |
 | Android | Android 10（API 29）及以上 |
-| 模块版本 | 1.9（versionCode 10） |
+| 模块版本 | 1.10（versionCode 11） |
 | 真机验证 | 小米、OPPO/ColorOS 已验证；vivo/iQOO、三星尚未验证 |
 
 模块依赖互传 App 的内部类名和方法签名，不保证兼容其他版本。
@@ -105,7 +96,7 @@ vivo 互传的机制与小米/OPPO 不同。它没有「所有人可见性 10 �
 
 ## 使用
 
-1. 安装 APK
+1. 从 [GitHub Releases](https://github.com/pangziqiang/io.github.pangziqiang.sharenolimit/releases) 下载并安装 APK
 2. 在 LSPosed 管理器中启用本模块
 3. 按设备系统勾选作用域：
    - 小米/澎湃系统：`com.miui.mishare.connectivity`
@@ -126,7 +117,7 @@ vivo 互传的机制与小米/OPPO 不同。它没有「所有人可见性 10 �
 ./gradlew :app:assembleRelease
 ```
 
-Release 构建需要在项目根目录提供 `keystore.properties`，或通过 `SHARENOLIMIT_KEYSTORE`、`SHARENOLIMIT_STORE_PASSWORD`、`SHARENOLIMIT_KEY_ALIAS`、`SHARENOLIMIT_KEY_PASSWORD` 环境变量提供签名信息。`keystore.properties` 示例：
+正式签名使用的 `release.keystore` 与 `keystore.properties` 均已被 `.gitignore` 忽略，不会提交到仓库。构建时需要在项目根目录提供签名信息，或通过 `SHARENOLIMIT_KEYSTORE`、`SHARENOLIMIT_STORE_PASSWORD`、`SHARENOLIMIT_KEY_ALIAS`、`SHARENOLIMIT_KEY_PASSWORD` 环境变量传入。`keystore.properties` 示例：
 
 ```properties
 storeFile=release.keystore
@@ -136,6 +127,8 @@ keyPassword=your-key-password
 ```
 
 产物：`app/build/outputs/apk/release/app-release.apk`
+
+APK 不提交到源码仓库，仅通过 GitHub Releases 分发。
 
 ## 目录
 

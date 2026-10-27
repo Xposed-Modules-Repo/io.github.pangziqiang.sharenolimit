@@ -6,3 +6,5 @@ local.properties
 .DS_Store
 release.keystore
 keystore.properties
+*.apk
+*.aab

@@ -10,7 +10,7 @@ The project originally targeted only the 10-minute auto-close limit in Mi Share 
 
 When reporting an issue, include the device model, system version, sharing-app version and LSPosed log.
 
-> Starting with 1.9, the module package changed from `io.github.pangziqiang.misharenolimit` to `io.github.pangziqiang.sharenolimit`, so it cannot update the old package in place. Disable and uninstall the old module in LSPosed Manager, install the new version, and select its scopes again.
+> Starting with 1.9, the module package changed from `io.github.pangziqiang.misharenolimit` to `io.github.pangziqiang.sharenolimit`. Starting with 1.10, releases use a dedicated production certificate that is incompatible with earlier signatures. Disable and uninstall the old module in LSPosed Manager, install the new version, and select its scopes again.
 
 Supported targets:
 
@@ -74,15 +74,6 @@ This module hooks:
 
 This adapter comes from static APK analysis and has not been verified on a Samsung device. Samsung re-obfuscates internal class names between releases. If both scheduler hooks fail, the receiver hook still blocks the expiry reset, but the version should be re-adapted.
 
-### Other vendors investigated
-
-The following vendors are intentionally not hooked because no matching 10-minute "Everyone visibility" mechanism was found:
-
-- Lenovo ZUI 15.0.0811 `com.zui.wifip2p` (Lenovo One) contains no visibility-expiry timer. Its 20/30/60/90-second constants cover connection negotiation and transfer tasks. The "about 5 minutes" note in the ZUI2Share project refers to the receiving device (for example, a ColorOS phone), not to ZUI.
-- Moto tank/fogos/lamu firmware dumps contain no standalone vendor sharing APK. `MotoSpaces` only embeds client declarations for Google Nearby Sharing; the actual Quick Share implementation is provided by GMS and is outside a vendor Share adapter.
-- Recent Honor devices generally lack a practical Bootloader unlock and LSPosed setup, so support is not recommended.
-- Huawei now uses HarmonyOS native applications and is outside the Android/LSPosed ecosystem.
-
 ## Compatibility
 
 | Component | Requirement |
@@ -91,14 +82,14 @@ The following vendors are intentionally not hooked because no matching 10-minute
 | Target packages | `com.miui.mishare.connectivity` / `com.coloros.oshare`, `com.oplus.oshare` / `com.vivo.easyshare` / `com.samsung.android.app.sharelive` |
 | Framework | LSPosed (traditional XposedBridge module format) |
 | Android | Android 10 (API 29) or later |
-| Module version | 1.9 (versionCode 10) |
+| Module version | 1.10 (versionCode 11) |
 | Device verification | Xiaomi and OPPO/ColorOS verified; vivo/iQOO and Samsung not yet verified |
 
 The module relies on internal class and method names from the target sharing apps. Compatibility with other versions is not guaranteed.
 
 ## Installation
 
-1. Install the APK.
+1. Download and install the APK from [GitHub Releases](https://github.com/pangziqiang/io.github.pangziqiang.sharenolimit/releases).
 2. Enable the module in LSPosed Manager.
 3. Select the matching scope:
    - MIUI/HyperOS: `com.miui.mishare.connectivity`
@@ -119,7 +110,7 @@ The project requires JDK 17+ and Android SDK 34+.
 ./gradlew :app:assembleRelease
 ```
 
-Release builds require `keystore.properties` in the project root, or the `SHARENOLIMIT_KEYSTORE`, `SHARENOLIMIT_STORE_PASSWORD`, `SHARENOLIMIT_KEY_ALIAS` and `SHARENOLIMIT_KEY_PASSWORD` environment variables. Example `keystore.properties`:
+Production signing uses `release.keystore` and `keystore.properties`, both ignored by `.gitignore` and never committed. Builds require the signing values in the project root or through the `SHARENOLIMIT_KEYSTORE`, `SHARENOLIMIT_STORE_PASSWORD`, `SHARENOLIMIT_KEY_ALIAS` and `SHARENOLIMIT_KEY_PASSWORD` environment variables. Example `keystore.properties`:
 
 ```properties
 storeFile=release.keystore
@@ -129,6 +120,8 @@ keyPassword=your-key-password
 ```
 
 The APK is written to `app/build/outputs/apk/release/app-release.apk`.
+
+APKs are not committed to the source repository; they are distributed through GitHub Releases only.
 
 ## License
 
