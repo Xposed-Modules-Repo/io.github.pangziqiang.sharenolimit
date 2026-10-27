@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">互传无限制</string>
-    <string name="module_desc">移除小米互传、ColorOS 互传、三星 S 互传「所有人」模式的 10 分钟自动关闭限制，以及 vivo/iQOO 互传群组的 10 分钟自动解散</string>
+    <string name="module_desc">移除小米互传、ColorOS、vivo/iQOO 和三星互传的 10 分钟自动关闭/解散限制。当前已真机验证小米和 OPPO，vivo 和三星尚未真机验证。</string>
 </resources>

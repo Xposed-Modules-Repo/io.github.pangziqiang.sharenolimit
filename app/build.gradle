@@ -2,12 +2,25 @@ plugins {
     id 'com.android.application'
 }
 
+def keystoreProperties = new Properties()
+def keystorePropertiesFile = rootProject.file('keystore.properties')
+if (keystorePropertiesFile.exists()) {
+    keystorePropertiesFile.withInputStream { keystoreProperties.load(it) }
+}
+
+def signingValue = { String environmentName, String propertyName, String fallback ->
+    System.getenv(environmentName)
+            ?: keystoreProperties.getProperty(propertyName)
+            ?: project.findProperty(propertyName)
+            ?: fallback
+}
+
 android {
-    namespace 'io.github.pangziqiang.misharenolimit'
+    namespace 'io.github.pangziqiang.sharenolimit'
     compileSdk 34
 
     defaultConfig {
-        applicationId "io.github.pangziqiang.misharenolimit"
+        applicationId "io.github.pangziqiang.sharenolimit"
         minSdk 29
         targetSdk 34
         versionCode 10
@@ -17,6 +30,23 @@ android {
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_11
         targetCompatibility JavaVersion.VERSION_11
+    }
+
+    signingConfigs {
+        release {
+            storeFile rootProject.file(signingValue('SHARENOLIMIT_KEYSTORE', 'storeFile',
+                    'release.keystore'))
+            storePassword signingValue('SHARENOLIMIT_STORE_PASSWORD', 'storePassword', null)
+            keyAlias signingValue('SHARENOLIMIT_KEY_ALIAS', 'keyAlias', null)
+            keyPassword signingValue('SHARENOLIMIT_KEY_PASSWORD', 'keyPassword', null)
+        }
+    }
+
+    buildTypes {
+        release {
+            signingConfig signingConfigs.release
+            minifyEnabled false
+        }
     }
 }
 

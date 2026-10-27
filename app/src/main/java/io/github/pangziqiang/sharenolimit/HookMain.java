@@ -1,4 +1,4 @@
-package io.github.pangziqiang.misharenolimit;
+package io.github.pangziqiang.sharenolimit;
 
 import android.content.Context;
 import android.content.Intent;

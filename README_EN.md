@@ -2,7 +2,15 @@
 
 [简体中文](README.md)
 
-An LSPosed module built with the traditional XposedBridge API that removes the 10-minute auto-close limit for the "Everyone" mode of system sharing apps.
+An LSPosed module built with the traditional XposedBridge API that removes the 10-minute auto-close/disband limits in system sharing apps.
+
+## Project history and verification status
+
+The project originally targeted only the 10-minute auto-close limit in Mi Share "Everyone" mode, then expanded to OPPO/ColorOS, vivo/iQOO and Samsung Share. Because only Xiaomi and OPPO devices are available, Mi Share and OPPO/ColorOS have been verified on real devices. The vivo/iQOO and Samsung adapters are based on static APK analysis and have not yet been verified on hardware, so they may stop working depending on the system or sharing-app version.
+
+When reporting an issue, include the device model, system version, sharing-app version and LSPosed log.
+
+> Starting with 1.9, the module package changed from `io.github.pangziqiang.misharenolimit` to `io.github.pangziqiang.sharenolimit`, so it cannot update the old package in place. Disable and uninstall the old module in LSPosed Manager, install the new version, and select its scopes again.
 
 Supported targets:
 
@@ -37,6 +45,8 @@ This module hooks:
 - `com.oplus.oshare.utils.s1.g()` (17.x) and `lb.s1.g()` (16.x) — returns `0` so the settings page and Quick Settings panel cannot expire the mode through their countdown UI.
 - `com.oplus.oshare.device.TimeoutReceiver.onReceive()` — ignores the switch timeout broadcast.
 
+These layers keep "Everyone" mode enabled and have been verified on an OPPO/ColorOS device.
+
 ### vivo / iQOO Share
 
 vivo uses a different mechanism: there is no "Everyone visibility expires after 10 minutes" state. Instead, an idle shake-to-share group is automatically dissolved:
@@ -51,7 +61,7 @@ This module hooks `ShakeDevicesConnectManager.I(boolean)`:
 - `false` still runs the original cleanup path, so leaving a group or turning the feature off cancels timers correctly;
 - `S()` returns `false` so the UI does not show a countdown that is about to dissolve the group.
 
-Adapted class names: `ic.m` in vivo Share 7.4.5.1 and `hc.m` in 7.4.2.15. Obfuscated class names can change between vivo releases; if the log says `ShakeDevicesConnectManager not found`, the module needs a new version adapter.
+Adapted class names: `ic.m` in vivo Share 7.4.5.1 and `hc.m` in 7.4.2.15. This adapter comes from static APK analysis and has not been verified on a vivo/iQOO device. Obfuscated class names can change between vivo releases; if the log says `ShakeDevicesConnectManager not found`, the module needs a new version adapter.
 
 ### Samsung S Share / Quick Share
 
@@ -82,6 +92,7 @@ The following vendors are intentionally not hooked because no matching 10-minute
 | Framework | LSPosed (traditional XposedBridge module format) |
 | Android | Android 10 (API 29) or later |
 | Module version | 1.9 (versionCode 10) |
+| Device verification | Xiaomi and OPPO/ColorOS verified; vivo/iQOO and Samsung not yet verified |
 
 The module relies on internal class and method names from the target sharing apps. Compatibility with other versions is not guaranteed.
 
@@ -96,7 +107,7 @@ The module relies on internal class and method names from the target sharing app
    - vivo/iQOO: `com.vivo.easyshare`
    - Samsung: `com.samsung.android.app.sharelive`
 4. Reboot the device.
-5. Enable the "Everyone" mode and verify it stays on for more than 10 minutes.
+5. Enable the "Everyone" mode and verify it stays on for more than 10 minutes. vivo and Samsung still need real-device feedback.
 
 The module has no launcher icon. All management is done in LSPosed Manager.
 
@@ -105,10 +116,19 @@ The module has no launcher icon. All management is done in LSPosed Manager.
 The project requires JDK 17+ and Android SDK 34+.
 
 ```bash
-./gradlew :app:assembleDebug
+./gradlew :app:assembleRelease
 ```
 
-The APK is written to `app/build/outputs/apk/debug/app-debug.apk`.
+Release builds require `keystore.properties` in the project root, or the `SHARENOLIMIT_KEYSTORE`, `SHARENOLIMIT_STORE_PASSWORD`, `SHARENOLIMIT_KEY_ALIAS` and `SHARENOLIMIT_KEY_PASSWORD` environment variables. Example `keystore.properties`:
+
+```properties
+storeFile=release.keystore
+storePassword=your-store-password
+keyAlias=sharenolimit
+keyPassword=your-key-password
+```
+
+The APK is written to `app/build/outputs/apk/release/app-release.apk`.
 
 ## License
 

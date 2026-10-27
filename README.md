@@ -4,6 +4,14 @@
 
 一个基于 LSPosed 传统 XposedBridge API 的模块，用来移除系统互传 App 的 10 分钟自动关闭/群组自动解散限制。
 
+## 项目演进与验证状态
+
+项目最初只适配小米互传「所有人」模式下的 10 分钟自动关闭限制，之后扩展到 OPPO/ColorOS、vivo/iQOO 和三星互传。由于目前只有小米和 OPPO 设备，小米与 OPPO/ColorOS 已完成真机验证；vivo/iQOO 和三星仍基于 APK 静态分析进行适配，尚未进行真机验证，相关功能可能因系统版本或互传 App 版本不同而失效。
+
+遇到问题时，请附上设备型号、系统版本、互传 App 版本以及 LSPosed 日志。
+
+> 1.9 起模块包名由 `io.github.pangziqiang.misharenolimit` 变更为 `io.github.pangziqiang.sharenolimit`，无法直接覆盖旧版安装。请先在 LSPosed 管理器中停用并卸载旧模块，再安装新版并重新勾选作用域。
+
 当前支持：
 
 - 小米互传 `com.miui.mishare.connectivity`
@@ -37,7 +45,7 @@ ColorOS 互传 17.2.35 中，互传接收状态保存在 `oshare_state`：
 - 上次开启时间 `com.oplus.oshare.utils.s1.g()`（17.x）和 `lb.s1.g()`（16.x）：返回 `0`，避免设置页和下拉面板的倒计时 UI 自行触发切换；
 - `com.oplus.oshare.device.TimeoutReceiver.onReceive()`：忽略 `oplus.action.oshare.switch.timeout` 到期广播。
 
-三层防护让「所有人」模式保持开启。
+多层防护让「所有人」模式保持开启。该适配已在 OPPO/ColorOS 设备上完成真机验证。
 
 ### vivo / iQOO 互传
 
@@ -53,7 +61,7 @@ vivo 互传的机制与小米/OPPO 不同。它没有「所有人可见性 10 �
 - 当参数为 `false` 时仍执行原逻辑，保证退出群组或关闭功能时能正常清理计时器；
 - `S()` 返回 `false`，避免状态栏/设置页继续显示即将解散的倒计时。
 
-已适配的类名：vivo 互传 7.4.5.1 的 `ic.m`，以及 7.4.2.15 的 `hc.m`。vivo 每次大版本更新都可能重新混淆类名；若日志提示 `ShakeDevicesConnectManager not found`，需要重新适配。
+已适配的类名：vivo 互传 7.4.5.1 的 `ic.m`，以及 7.4.2.15 的 `hc.m`。该适配来自 APK 静态分析，尚未在 vivo/iQOO 真机验证。vivo 每次大版本更新都可能重新混淆类名；若日志提示 `ShakeDevicesConnectManager not found`，需要重新适配。
 
 ### 三星 S 互传 / Quick Share
 
@@ -84,6 +92,7 @@ vivo 互传的机制与小米/OPPO 不同。它没有「所有人可见性 10 �
 | 框架 | LSPosed（传统 XposedBridge 模块格式） |
 | Android | Android 10（API 29）及以上 |
 | 模块版本 | 1.9（versionCode 10） |
+| 真机验证 | 小米、OPPO/ColorOS 已验证；vivo/iQOO、三星尚未验证 |
 
 模块依赖互传 App 的内部类名和方法签名，不保证兼容其他版本。
 
@@ -105,7 +114,7 @@ vivo 互传的机制与小米/OPPO 不同。它没有「所有人可见性 10 �
    - vivo/iQOO：`com.vivo.easyshare`
    - 三星：`com.samsung.android.app.sharelive`
 4. 重启手机
-5. 小米/OPPO/三星打开「所有人」模式，vivo 创建摇一摇群组，等待超过 10 分钟验证不会自动关闭/解散
+5. 小米/OPPO/三星打开「所有人」模式，vivo 创建摇一摇群组，等待超过 10 分钟验证不会自动关闭/解散；其中 vivo 和三星仍需更多真机反馈
 
 模块没有桌面图标，所有操作都在 LSPosed 管理器中完成。
 
@@ -114,14 +123,23 @@ vivo 互传的机制与小米/OPPO 不同。它没有「所有人可见性 10 �
 需要 JDK 17+ 和 Android SDK 34+。
 
 ```bash
-./gradlew :app:assembleDebug
+./gradlew :app:assembleRelease
 ```
 
-产物：`app/build/outputs/apk/debug/app-debug.apk`
+Release 构建需要在项目根目录提供 `keystore.properties`，或通过 `SHARENOLIMIT_KEYSTORE`、`SHARENOLIMIT_STORE_PASSWORD`、`SHARENOLIMIT_KEY_ALIAS`、`SHARENOLIMIT_KEY_PASSWORD` 环境变量提供签名信息。`keystore.properties` 示例：
+
+```properties
+storeFile=release.keystore
+storePassword=your-store-password
+keyAlias=sharenolimit
+keyPassword=your-key-password
+```
+
+产物：`app/build/outputs/apk/release/app-release.apk`
 
 ## 目录
 
-- `app/src/main/java/io/github/pangziqiang/misharenolimit/HookMain.java` —— XposedBridge 入口与 hook
+- `app/src/main/java/io/github/pangziqiang/sharenolimit/HookMain.java` —— XposedBridge 入口与 hook
 - `app/src/main/assets/xposed_init` —— LSPosed 传统模块入口声明
 - `app/src/main/res/values/`、`values-zh-rCN/` —— 中英文资源
 

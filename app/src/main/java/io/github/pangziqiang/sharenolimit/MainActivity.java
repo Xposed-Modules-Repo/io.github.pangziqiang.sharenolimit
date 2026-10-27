@@ -1,4 +1,4 @@
-package io.github.pangziqiang.misharenolimit;
+package io.github.pangziqiang.sharenolimit;
 
 import android.app.Activity;
 import android.os.Bundle;

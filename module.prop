@@ -1,6 +1,6 @@
 name=ShareNoLimit
-package=io.github.pangziqiang.misharenolimit
+package=io.github.pangziqiang.sharenolimit
 author=yao
-description=移除小米互传 / ColorOS 互传 / 三星 S 互传「所有人」10分钟自动关闭限制与 vivo 互传群组自动解散 | Remove Mi Share / ColorOS Share / Samsung S Share auto-close and vivo Share auto-disband limits
+description=移除小米互传、ColorOS、vivo/iQOO 和三星互传的 10 分钟自动关闭/解散限制；已真机验证小米和 OPPO | Remove 10-minute auto-close/disband limits in Mi Share, ColorOS, vivo/iQOO and Samsung Share; verified on Xiaomi and OPPO devices
 version=1.9
 versionCode=10
