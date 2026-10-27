@@ -40,28 +40,31 @@ public class HookMain implements IXposedHookLoadPackage {
     }
 
     private static void hookMiShare(ClassLoader classLoader) {
+        Class<?> clazz;
         try {
-            Class<?> clazz = XposedHelpers.findClass("T0.b", classLoader);
-
-            XposedHelpers.findAndHookMethod(clazz, "f", new XC_MethodHook() {
-                @Override
-                protected void beforeHookedMethod(MethodHookParam param) {
-                    XposedBridge.log(TAG + "skip MiShare AutoClose.f()");
-                    param.setResult(null);
-                }
-            });
-            XposedBridge.log(TAG + "hooked MiShare AutoClose.f()");
-
-            XposedHelpers.findAndHookMethod(clazz, "d", new XC_MethodHook() {
-                @Override
-                protected void beforeHookedMethod(MethodHookParam param) {
-                    XposedBridge.log(TAG + "skip MiShare AutoClose.d()");
-                    param.setResult(null);
-                }
-            });
-            XposedBridge.log(TAG + "hooked MiShare AutoClose.d()");
+            clazz = XposedHelpers.findClass("T0.b", classLoader);
         } catch (Throwable t) {
-            XposedBridge.log(TAG + "MiShare hook failed: " + t);
+            XposedBridge.log(TAG + "MiShare AutoClose class not found: " + t);
+            return;
+        }
+
+        hookMiAutoCloseMethod(clazz, "f");
+        hookMiAutoCloseMethod(clazz, "d");
+    }
+
+    private static void hookMiAutoCloseMethod(Class<?> clazz, String methodName) {
+        try {
+            XposedHelpers.findAndHookMethod(clazz, methodName, new XC_MethodHook() {
+                @Override
+                protected void beforeHookedMethod(MethodHookParam param) {
+                    XposedBridge.log(TAG + "skip MiShare AutoClose." + methodName + "()");
+                    param.setResult(null);
+                }
+            });
+            XposedBridge.log(TAG + "hooked MiShare AutoClose." + methodName + "()");
+        } catch (Throwable t) {
+            XposedBridge.log(TAG + "MiShare AutoClose." + methodName
+                    + "() hook failed: " + t);
         }
     }
 
